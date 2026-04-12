@@ -8,38 +8,34 @@ import jakarta.persistence.*;
 public class MLibro {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "libro_id", nullable = true)
-    private Integer libroId;
+    private long libroId;
 
-    @Column(length = 70, nullable = true)
+    @Column(length = 70, nullable = false)
     private String nombre;
 
-    @Column(length = 30, nullable = true)
+    @Column(length = 30, nullable = false)
     private String genero;
 
-    @Column(length = 50, nullable = true)
+    @Column(length = 50, nullable = false)
     private String autor;
 
     @Column(name = "editorial_id", nullable = true)
     private Integer editorialId;
 
-    @Column(nullable = true)
-    private Integer stock;
-
     public MLibro() {
     }
 
-    public MLibro(Integer libroId, String nombre, String genero, String autor, Integer editorialId, Integer stock) {
+    public MLibro(Integer libroId, String nombre, String genero, String autor, Integer editorialId) {
         this.libroId = libroId;
         this.nombre = nombre;
         this.genero = genero;
         this.autor = autor;
         this.editorialId = editorialId;
-        this.stock = stock;
     }
 
-    public Integer getLibroId() {
+    public long getLibroId() {
         return libroId;
     }
 
@@ -77,13 +73,5 @@ public class MLibro {
 
     public void setEditorialId(Integer editorialId) {
         this.editorialId = editorialId;
-    }
-
-    public Integer getStock() {
-        return stock;
-    }
-
-    public void setStock(Integer stock) {
-        this.stock = stock;
     }
 }

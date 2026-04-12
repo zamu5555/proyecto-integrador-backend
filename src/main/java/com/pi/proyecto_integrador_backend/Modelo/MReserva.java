@@ -10,9 +10,9 @@ import java.time.LocalDate;
 public class MReserva {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "reserva_id", nullable = true)
-    private Integer reservaId;
+    private long reservaId;
 
     @Column(name = "tipo_reserva", length = 20, nullable = true)
     private String tipoReserva;
@@ -37,7 +37,7 @@ public class MReserva {
         this.usuarioId = usuarioId;
     }
 
-    public Integer getReservaId() {
+    public long getReservaId() {
         return reservaId;
     }
 

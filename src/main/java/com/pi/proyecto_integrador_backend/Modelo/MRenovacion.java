@@ -12,7 +12,7 @@ public class MRenovacion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "renovacion_id", nullable = true)
-    private Integer renovacionId;
+    private long renovacionId;
 
     @Column(name = "reserva_id", nullable = false)
     private Integer reservaId;
@@ -29,7 +29,7 @@ public class MRenovacion {
         this.fechaRenovacion = fechaRenovacion;
     }
 
-    public Integer getRenovacionId() {
+    public long getRenovacionId() {
         return renovacionId;
     }
 

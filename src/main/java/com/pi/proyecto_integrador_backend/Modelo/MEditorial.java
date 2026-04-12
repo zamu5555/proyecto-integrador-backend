@@ -8,9 +8,9 @@ import jakarta.persistence.*;
 public class MEditorial {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "editorial_id")
-    private Integer editorialId;
+    private long editorialId;
 
     @Column(name = "nombre_editorial", length = 50, nullable = false)
     private String nombreEditorial;
@@ -23,7 +23,7 @@ public class MEditorial {
         this.nombreEditorial = nombreEditorial;
     }
 
-    public Integer getEditorialId() {
+    public long getEditorialId() {
         return editorialId;
     }
 

@@ -8,9 +8,8 @@ import jakarta.persistence.*;
 public class MUsuario {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "usuario_id")
-    private Integer usuarioId;
+    private long usuarioId;
 
     @Column(length = 30, nullable = false)
     private String nombre;
@@ -35,7 +34,7 @@ public class MUsuario {
         this.correo = correo;
     }
 
-    public Integer getUsuarioId() {
+    public long getUsuarioId() {
         return usuarioId;
     }
 

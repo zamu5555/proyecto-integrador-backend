@@ -1,22 +1,22 @@
 package com.pi.proyecto_integrador_backend.Modelo;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "reserva_libro")
-
 public class MReservaLibro {
 
     @Id
-    @Column(name = "reserva_id", nullable = true)
-    private Integer reservaId;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
-    @Id
-    @Column(name = "libro_id", nullable = false)
-    private Integer libroId;
+    @ManyToOne
+    @JoinColumn(name = "reserva_id", nullable = false)
+    private MReserva reserva;
+
+    @ManyToOne
+    @JoinColumn(name = "libro_id", nullable = false)
+    private MLibro libro;
 
     @Column(nullable = false)
     private Integer cantidad;
@@ -24,26 +24,30 @@ public class MReservaLibro {
     public MReservaLibro() {
     }
 
-    public MReservaLibro(Integer reservaId, Integer libroId, Integer cantidad) {
-        this.reservaId = reservaId;
-        this.libroId = libroId;
+    public MReservaLibro(MReserva reserva, MLibro libro, Integer cantidad) {
+        this.reserva = reserva;
+        this.libro = libro;
         this.cantidad = cantidad;
     }
 
-    public Integer getReservaId() {
-        return reservaId;
+    public Long getId() {
+        return id;
     }
 
-    public void setReservaId(Integer reservaId) {
-        this.reservaId = reservaId;
+    public MReserva getReserva() {
+        return reserva;
     }
 
-    public Integer getLibroId() {
-        return libroId;
+    public void setReserva(MReserva reserva) {
+        this.reserva = reserva;
     }
 
-    public void setLibroId(Integer libroId) {
-        this.libroId = libroId;
+    public MLibro getLibro() {
+        return libro;
+    }
+
+    public void setLibro(MLibro libro) {
+        this.libro = libro;
     }
 
     public Integer getCantidad() {
