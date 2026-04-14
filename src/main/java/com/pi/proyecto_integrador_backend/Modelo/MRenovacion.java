@@ -23,7 +23,7 @@ public class MRenovacion {
     public MRenovacion() {
     }
 
-    public MRenovacion(Integer renovacionId, Integer reservaId, LocalDate fechaRenovacion) {
+    public MRenovacion(long renovacionId, Integer reservaId, LocalDate fechaRenovacion) {
         this.renovacionId = renovacionId;
         this.reservaId = reservaId;
         this.fechaRenovacion = fechaRenovacion;

@@ -26,7 +26,7 @@ public class MUsuario {
     public MUsuario() {
     }
 
-    public MUsuario(Integer usuarioId, String nombre, String documento, String telefono, String correo) {
+    public MUsuario(long usuarioId, String nombre, String documento, String telefono, String correo) {
         this.usuarioId = usuarioId;
         this.nombre = nombre;
         this.documento = documento;

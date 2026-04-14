@@ -18,7 +18,7 @@ public class MEditorial {
     public MEditorial() {
     }
 
-    public MEditorial(Integer editorialId, String nombreEditorial) {
+    public MEditorial(long editorialId, String nombreEditorial) {
         this.editorialId = editorialId;
         this.nombreEditorial = nombreEditorial;
     }

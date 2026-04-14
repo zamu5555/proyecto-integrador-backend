@@ -29,7 +29,7 @@ public class MReserva {
     public MReserva() {
     }
 
-    public MReserva(Integer reservaId, String tipoReserva, LocalDate fechaPrestamo, LocalDate fechaDevolucion, Integer usuarioId) {
+    public MReserva(long reservaId, String tipoReserva, LocalDate fechaPrestamo, LocalDate fechaDevolucion, Integer usuarioId) {
         this.reservaId = reservaId;
         this.tipoReserva = tipoReserva;
         this.fechaPrestamo = fechaPrestamo;

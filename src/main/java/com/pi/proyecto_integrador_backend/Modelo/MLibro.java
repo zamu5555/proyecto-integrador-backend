@@ -9,7 +9,7 @@ public class MLibro {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "libro_id", nullable = true)
+    @Column(name = "libroId", nullable = true)
     private long libroId;
 
     @Column(length = 70, nullable = false)
@@ -27,7 +27,7 @@ public class MLibro {
     public MLibro() {
     }
 
-    public MLibro(Integer libroId, String nombre, String genero, String autor, Integer editorialId) {
+    public MLibro(long libroId, String nombre, String genero, String autor, Integer editorialId) {
         this.libroId = libroId;
         this.nombre = nombre;
         this.genero = genero;
