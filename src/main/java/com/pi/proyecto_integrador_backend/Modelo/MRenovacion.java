@@ -11,7 +11,7 @@ public class MRenovacion {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "renovacion_id", nullable = true)
+    @Column(name = "RenovacionId", nullable = true)
     private long renovacionId;
 
     @Column(name = "reserva_id", nullable = false)
