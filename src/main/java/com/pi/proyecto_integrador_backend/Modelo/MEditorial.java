@@ -1,10 +1,10 @@
 package com.pi.proyecto_integrador_backend.Modelo;
 
 import jakarta.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "editorial")
-
 public class MEditorial {
 
     @Id
@@ -15,8 +15,10 @@ public class MEditorial {
     @Column(name = "nombre_editorial", length = 50, nullable = false)
     private String nombreEditorial;
 
-    public MEditorial() {
-    }
+    @OneToMany(mappedBy = "editorial", cascade = CascadeType.ALL)
+    private List<MLibro> libros;
+
+    public MEditorial() {}
 
     public MEditorial(long editorialId, String nombreEditorial) {
         this.editorialId = editorialId;
@@ -27,7 +29,7 @@ public class MEditorial {
         return editorialId;
     }
 
-    public void setEditorialId(Integer editorialId) {
+    public void setEditorialId(long editorialId) {
         this.editorialId = editorialId;
     }
 
@@ -37,5 +39,13 @@ public class MEditorial {
 
     public void setNombreEditorial(String nombreEditorial) {
         this.nombreEditorial = nombreEditorial;
+    }
+
+    public List<MLibro> getLibros() {
+        return libros;
+    }
+
+    public void setLibros(List<MLibro> libros) {
+        this.libros = libros;
     }
 }

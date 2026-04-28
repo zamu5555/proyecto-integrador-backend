@@ -1,20 +1,19 @@
 package com.pi.proyecto_integrador_backend.Modelo;
 
 import jakarta.persistence.*;
-
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "reserva")
-
 public class MReserva {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "reserva_id", nullable = true)
+    @Column(name = "reserva_id")
     private long reservaId;
 
-    @Column(name = "tipo_reserva", length = 20, nullable = true)
+    @Column(name = "tipo_reserva", length = 20)
     private String tipoReserva;
 
     @Column(name = "fecha_prestamo", nullable = false)
@@ -23,57 +22,23 @@ public class MReserva {
     @Column(name = "fecha_devolucion", nullable = false)
     private LocalDate fechaDevolucion;
 
-    @Column(name = "usuario_id", nullable = false)
-    private Integer usuarioId;
+    @ManyToOne
+    @JoinColumn(name = "usuario_id")
+    private MUsuario usuario;
 
-    public MReserva() {
-    }
+    @OneToMany(mappedBy = "reserva", cascade = CascadeType.ALL)
+    private List<MRenovacion> renovaciones;
 
-    public MReserva(long reservaId, String tipoReserva, LocalDate fechaPrestamo, LocalDate fechaDevolucion, Integer usuarioId) {
-        this.reservaId = reservaId;
-        this.tipoReserva = tipoReserva;
-        this.fechaPrestamo = fechaPrestamo;
-        this.fechaDevolucion = fechaDevolucion;
-        this.usuarioId = usuarioId;
-    }
+    @OneToMany(mappedBy = "reserva", cascade = CascadeType.ALL)
+    private List<MReservaLibro> reservaLibros;
+
+    public MReserva() {}
 
     public long getReservaId() {
         return reservaId;
     }
 
-    public void setReservaId(Integer reservaId) {
+    public void setReservaId(long reservaId) {
         this.reservaId = reservaId;
-    }
-
-    public String getTipoReserva() {
-        return tipoReserva;
-    }
-
-    public void setTipoReserva(String tipoReserva) {
-        this.tipoReserva = tipoReserva;
-    }
-
-    public LocalDate getFechaPrestamo() {
-        return fechaPrestamo;
-    }
-
-    public void setFechaPrestamo(LocalDate fechaPrestamo) {
-        this.fechaPrestamo = fechaPrestamo;
-    }
-
-    public LocalDate getFechaDevolucion() {
-        return fechaDevolucion;
-    }
-
-    public void setFechaDevolucion(LocalDate fechaDevolucion) {
-        this.fechaDevolucion = fechaDevolucion;
-    }
-
-    public Integer getUsuarioId() {
-        return usuarioId;
-    }
-
-    public void setUsuarioId(Integer usuarioId) {
-        this.usuarioId = usuarioId;
     }
 }

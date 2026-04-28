@@ -1,15 +1,15 @@
 package com.pi.proyecto_integrador_backend.Modelo;
 
 import jakarta.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "libro")
-
 public class MLibro {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "libroId", nullable = true)
+    @Column(name = "libro_id")
     private long libroId;
 
     @Column(length = 70, nullable = false)
@@ -21,25 +21,28 @@ public class MLibro {
     @Column(length = 50, nullable = false)
     private String autor;
 
-    @Column(name = "editorial_id", nullable = true)
-    private Integer editorialId;
+    @ManyToOne
+    @JoinColumn(name = "editorial_id")
+    private MEditorial editorial;
 
-    public MLibro() {
-    }
+    @OneToMany(mappedBy = "libro", cascade = CascadeType.ALL)
+    private List<MReservaLibro> reservaLibros;
 
-    public MLibro(long libroId, String nombre, String genero, String autor, Integer editorialId) {
+    public MLibro() {}
+
+    public MLibro(long libroId, String nombre, String genero, String autor, MEditorial editorial) {
         this.libroId = libroId;
         this.nombre = nombre;
         this.genero = genero;
         this.autor = autor;
-        this.editorialId = editorialId;
+        this.editorial = editorial;
     }
 
     public long getLibroId() {
         return libroId;
     }
 
-    public void setLibroId(Integer libroId) {
+    public void setLibroId(long libroId) {
         this.libroId = libroId;
     }
 
@@ -67,11 +70,11 @@ public class MLibro {
         this.autor = autor;
     }
 
-    public Integer getEditorialId() {
-        return editorialId;
+    public MEditorial getEditorial() {
+        return editorial;
     }
 
-    public void setEditorialId(Integer editorialId) {
-        this.editorialId = editorialId;
+    public void setEditorial(MEditorial editorial) {
+        this.editorial = editorial;
     }
 }

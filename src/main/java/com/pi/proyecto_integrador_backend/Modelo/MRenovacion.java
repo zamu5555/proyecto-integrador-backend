@@ -1,55 +1,31 @@
 package com.pi.proyecto_integrador_backend.Modelo;
 
 import jakarta.persistence.*;
-
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "renovacion")
-
 public class MRenovacion {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "RenovacionId", nullable = true)
+    @Column(name = "renovacion_id")
     private long renovacionId;
 
-    @Column(name = "reserva_id", nullable = false)
-    private Integer reservaId;
+    @ManyToOne
+    @JoinColumn(name = "reserva_id")
+    private MReserva reserva;
 
     @Column(name = "fecha_renovacion", nullable = false)
     private LocalDate fechaRenovacion;
 
-    public MRenovacion() {
-    }
-
-    public MRenovacion(long renovacionId, Integer reservaId, LocalDate fechaRenovacion) {
-        this.renovacionId = renovacionId;
-        this.reservaId = reservaId;
-        this.fechaRenovacion = fechaRenovacion;
-    }
+    public MRenovacion() {}
 
     public long getRenovacionId() {
         return renovacionId;
     }
 
-    public void setRenovacionId(Integer renovacionId) {
+    public void setRenovacionId(long renovacionId) {
         this.renovacionId = renovacionId;
-    }
-
-    public Integer getReservaId() {
-        return reservaId;
-    }
-
-    public void setReservaId(Integer reservaId) {
-        this.reservaId = reservaId;
-    }
-
-    public LocalDate getFechaRenovacion() {
-        return fechaRenovacion;
-    }
-
-    public void setFechaRenovacion(LocalDate fechaRenovacion) {
-        this.fechaRenovacion = fechaRenovacion;
     }
 }

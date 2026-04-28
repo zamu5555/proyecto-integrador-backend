@@ -11,50 +11,21 @@ public class MReservaLibro {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "reserva_id", nullable = false)
+    @JoinColumn(name = "reserva_id")
     private MReserva reserva;
 
     @ManyToOne
-    @JoinColumn(name = "libro_id", nullable = false)
+    @JoinColumn(name = "libro_id")
     private MLibro libro;
 
     @Column(nullable = false)
     private Integer cantidad;
 
-    public MReservaLibro() {
-    }
+    public MReservaLibro() {}
 
     public MReservaLibro(MReserva reserva, MLibro libro, Integer cantidad) {
         this.reserva = reserva;
         this.libro = libro;
-        this.cantidad = cantidad;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public MReserva getReserva() {
-        return reserva;
-    }
-
-    public void setReserva(MReserva reserva) {
-        this.reserva = reserva;
-    }
-
-    public MLibro getLibro() {
-        return libro;
-    }
-
-    public void setLibro(MLibro libro) {
-        this.libro = libro;
-    }
-
-    public Integer getCantidad() {
-        return cantidad;
-    }
-
-    public void setCantidad(Integer cantidad) {
         this.cantidad = cantidad;
     }
 }

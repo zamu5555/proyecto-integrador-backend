@@ -1,10 +1,10 @@
 package com.pi.proyecto_integrador_backend.Modelo;
 
 import jakarta.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "usuario")
-
 public class MUsuario {
 
     @Id
@@ -23,8 +23,10 @@ public class MUsuario {
     @Column(length = 40)
     private String correo;
 
-    public MUsuario() {
-    }
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
+    private List<MReserva> reservas;
+
+    public MUsuario() {}
 
     public MUsuario(long usuarioId, String nombre, String documento, String telefono, String correo) {
         this.usuarioId = usuarioId;
@@ -38,7 +40,7 @@ public class MUsuario {
         return usuarioId;
     }
 
-    public void setUsuarioId(Integer usuarioId) {
+    public void setUsuarioId(long usuarioId) {
         this.usuarioId = usuarioId;
     }
 
@@ -49,31 +51,4 @@ public class MUsuario {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-
-    public String getDocumento() {
-        return documento;
-    }
-
-    public void setDocumento(String documento) {
-        this.documento = documento;
-    }
-
-    public String getTelefono() {
-        return telefono;
-    }
-
-    public void setTelefono(String telefono) {
-        this.telefono = telefono;
-    }
-
-    public String getCorreo() {
-        return correo;
-    }
-
-    public void setCorreo(String correo) {
-        this.correo = correo;
-    }
 }
-
-
-
