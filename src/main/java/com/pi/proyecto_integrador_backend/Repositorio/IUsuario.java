@@ -4,7 +4,11 @@ import com.pi.proyecto_integrador_backend.Modelo.MUsuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-@Repository
+import java.util.Optional;
 
-public interface IUsuario extends JpaRepository<MUsuario,Integer > {
+@Repository
+public interface IUsuario extends JpaRepository<MUsuario, Long> {
+
+    Optional<MUsuario> findByDocumento(String documento);
+
 }
