@@ -4,10 +4,9 @@ import com.pi.proyecto_integrador_backend.Modelo.MReserva;
 import com.pi.proyecto_integrador_backend.Modelo.MReservaLibro;
 import com.pi.proyecto_integrador_backend.Servicio.SReservaLibro;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/reserva-libro")
@@ -17,28 +16,54 @@ public class CReservaLibro {
     @Autowired
     private SReservaLibro reservaLibroService;
 
+    // Lista general
     @GetMapping
-    public List<MReservaLibro> listar() {
-        return reservaLibroService.listar();
+    public ResponseEntity<?> listar() {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(reservaLibroService.listar());
+        } catch (Exception error) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error.getMessage());
+        }
     }
 
+    // Buscar por ID
     @GetMapping("/{id}")
-    public Optional<MReservaLibro> buscarPorId(@PathVariable Long id) {
-        return reservaLibroService.buscarPorId(id);
+    public ResponseEntity<?> buscarPorId(@PathVariable Long id) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(reservaLibroService.buscarPorId(id));
+        } catch (Exception error) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error.getMessage());
+        }
     }
 
+    // Guardar
     @PostMapping
-    public MReservaLibro guardar(@RequestBody MReservaLibro reservaLibro) {
-        return reservaLibroService.guardar(reservaLibro);
+    public ResponseEntity<?> guardar(@RequestBody MReservaLibro reservaLibro) {
+        try {
+            return ResponseEntity.status(HttpStatus.CREATED).body(reservaLibroService.guardar(reservaLibro));
+        } catch (Exception error) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error.getMessage());
+        }
     }
 
+    // Eliminar
     @DeleteMapping("/{id}")
-    public void eliminar(@PathVariable Long id) {
-        reservaLibroService.eliminar(id);
+    public ResponseEntity<?> eliminar(@PathVariable Long id) {
+        try {
+            reservaLibroService.eliminar(id);
+            return ResponseEntity.status(HttpStatus.OK).body("ReservaLibro eliminada correctamente");
+        } catch (Exception error) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error.getMessage());
+        }
     }
 
+    // Buscar por reserva
     @PostMapping("/por-reserva")
-    public List<MReservaLibro> buscarPorReserva(@RequestBody MReserva reserva) {
-        return reservaLibroService.buscarPorReserva(reserva);
+    public ResponseEntity<?> buscarPorReserva(@RequestBody MReserva reserva) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(reservaLibroService.buscarPorReserva(reserva));
+        } catch (Exception error) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error.getMessage());
+        }
     }
 }

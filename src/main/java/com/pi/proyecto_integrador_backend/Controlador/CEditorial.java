@@ -3,9 +3,9 @@ package com.pi.proyecto_integrador_backend.Controlador;
 import com.pi.proyecto_integrador_backend.Modelo.MEditorial;
 import com.pi.proyecto_integrador_backend.Servicios.SEditorial;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/editoriales")
@@ -15,41 +15,65 @@ public class CEditorial {
     @Autowired
     private SEditorial sEditorial;
 
-    //  Lista general
+    // Lista general
     @GetMapping
-    public List<MEditorial> listarEditoriales() throws Exception {
-        return sEditorial.listarEditoriales();
+    public ResponseEntity<?> listarEditoriales() {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(sEditorial.listarEditoriales());
+        } catch (Exception error) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error.getMessage());
+        }
     }
 
-    //  Buscar por ID
+    // Buscar por ID
     @GetMapping("/{id}")
-    public MEditorial consultarPorId(@PathVariable Integer id) throws Exception {
-        return sEditorial.consultarPorId(id);
+    public ResponseEntity<?> consultarPorId(@PathVariable Integer id) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(sEditorial.consultarPorId(id));
+        } catch (Exception error) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error.getMessage());
+        }
     }
 
-    //  Buscar por nombre
+    // Buscar por nombre
     @GetMapping("/buscar")
-    public List<MEditorial> consultarPorNombre(@RequestParam String nombre) throws Exception {
-        return sEditorial.consultarPorNombre(nombre);
+    public ResponseEntity<?> consultarPorNombre(@RequestParam String nombre) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(sEditorial.consultarPorNombre(nombre));
+        } catch (Exception error) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error.getMessage());
+        }
     }
 
-    //  Agregar editorial
+    // Agregar editorial
     @PostMapping
-    public MEditorial agregarEditorial(@RequestBody MEditorial editorial) throws Exception {
-        return sEditorial.agregarEditorial(editorial);
+    public ResponseEntity<?> agregarEditorial(@RequestBody MEditorial editorial) {
+        try {
+            return ResponseEntity.status(HttpStatus.CREATED).body(sEditorial.agregarEditorial(editorial));
+        } catch (Exception error) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error.getMessage());
+        }
     }
 
-    //  Modificar editorial
+    // Modificar editorial
     @PutMapping("/{id}")
-    public MEditorial modificarEditorial(@PathVariable Integer id,
-                                         @RequestBody MEditorial editorial) throws Exception {
-        return sEditorial.modificarEditorial(id, editorial);
+    public ResponseEntity<?> modificarEditorial(@PathVariable Integer id,
+                                                @RequestBody MEditorial editorial) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(sEditorial.modificarEditorial(id, editorial));
+        } catch (Exception error) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error.getMessage());
+        }
     }
 
-    //  Eliminar editorial
+    // Eliminar editorial
     @DeleteMapping("/{id}")
-    public String eliminarEditorial(@PathVariable Integer id) throws Exception {
-        sEditorial.eliminarEditorial(id);
-        return "Editorial eliminada correctamente";
+    public ResponseEntity<?> eliminarEditorial(@PathVariable Integer id) {
+        try {
+            sEditorial.eliminarEditorial(id);
+            return ResponseEntity.status(HttpStatus.OK).body("Editorial eliminada correctamente");
+        } catch (Exception error) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error.getMessage());
+        }
     }
 }

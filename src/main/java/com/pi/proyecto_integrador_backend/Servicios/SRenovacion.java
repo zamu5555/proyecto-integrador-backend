@@ -14,8 +14,12 @@ public class SRenovacion {
     private IRenovacion iRenovacion;
 
     // Lista general de renovacines
-    public List<MRenovacion> listarRenovaciones() throws Exception{
-        return iRenovacion.findAll();
+    public List<MRenovacion> listarRenovaciones() throws Exception {
+        try {
+            return iRenovacion.findAll();
+        } catch (Exception error) {
+            throw new Exception(error.getMessage());
+        }
     }
 
     // Encontrar renovacion por fecha

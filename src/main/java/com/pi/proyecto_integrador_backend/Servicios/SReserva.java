@@ -14,23 +14,59 @@ public class SReserva {
     @Autowired
     private IReserva iReserva;
 
-    public List<MReserva> listarReservas() {
-        return iReserva.findAll();
+    // Lista general
+    public List<MReserva> listarReservas() throws Exception {
+        try {
+            return iReserva.findAll();
+        } catch (Exception error) {
+            throw new Exception(error.getMessage());
+        }
     }
 
-    public Optional<MReserva> encontrarReserva(Integer id) {
-        return iReserva.findById(id);
+    // Buscar por ID
+    public MReserva encontrarReserva(Integer id) throws Exception {
+        try {
+            Optional<MReserva> reserva = iReserva.findById(id);
+            if (reserva.isPresent()) {
+                return reserva.get();
+            } else {
+                throw new Exception("Reserva no encontrada con id: " + id);
+            }
+        } catch (Exception error) {
+            throw new Exception(error.getMessage());
+        }
     }
 
-    public MReserva agregarReserva(MReserva reserva) {
-        return iReserva.save(reserva);
+    // Agregar reserva
+    public MReserva agregarReserva(MReserva reserva) throws Exception {
+        try {
+            if (reserva == null) {
+                throw new Exception("La reserva no puede ser nula");
+            }
+            return iReserva.save(reserva);
+        } catch (Exception error) {
+            throw new Exception(error.getMessage());
+        }
     }
 
-    public void eliminarReserva(Integer id) {
-        iReserva.deleteById(id);
+    // Eliminar reserva
+    public void eliminarReserva(Integer id) throws Exception {
+        try {
+            if (!iReserva.existsById(id)) {
+                throw new Exception("No se puede eliminar, reserva no encontrada con id: " + id);
+            }
+            iReserva.deleteById(id);
+        } catch (Exception error) {
+            throw new Exception(error.getMessage());
+        }
     }
 
-    public boolean existeReserva(Integer id) {
-        return iReserva.existsById(id);
+    // Verificar existencia
+    public boolean existeReserva(Integer id) throws Exception {
+        try {
+            return iReserva.existsById(id);
+        } catch (Exception error) {
+            throw new Exception(error.getMessage());
+        }
     }
 }

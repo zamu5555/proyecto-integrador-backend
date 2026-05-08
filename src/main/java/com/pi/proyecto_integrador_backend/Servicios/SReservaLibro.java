@@ -15,23 +15,62 @@ public class SReservaLibro {
     @Autowired
     private IReservaLibro reservaLibroRepo;
 
-    public List<MReservaLibro> listar() {
-        return reservaLibroRepo.findAll();
+    // Lista general
+    public List<MReservaLibro> listar() throws Exception {
+        try {
+            return reservaLibroRepo.findAll();
+        } catch (Exception error) {
+            throw new Exception(error.getMessage());
+        }
     }
 
-    public Optional<MReservaLibro> buscarPorId(Long id) {
-        return reservaLibroRepo.findById(id);
+    // Buscar por ID
+    public MReservaLibro buscarPorId(Long id) throws Exception {
+        try {
+            Optional<MReservaLibro> reservaLibro = reservaLibroRepo.findById(id);
+            if (reservaLibro.isPresent()) {
+                return reservaLibro.get();
+            } else {
+                throw new Exception("ReservaLibro no encontrada con id: " + id);
+            }
+        } catch (Exception error) {
+            throw new Exception(error.getMessage());
+        }
     }
 
-    public List<MReservaLibro> buscarPorReserva(MReserva reserva) {
-        return reservaLibroRepo.findByReserva(reserva);
+    // Buscar por reserva
+    public List<MReservaLibro> buscarPorReserva(MReserva reserva) throws Exception {
+        try {
+            if (reserva == null) {
+                throw new Exception("La reserva no puede ser nula");
+            }
+            return reservaLibroRepo.findByReserva(reserva);
+        } catch (Exception error) {
+            throw new Exception(error.getMessage());
+        }
     }
 
-    public MReservaLibro guardar(MReservaLibro reservaLibro) {
-        return reservaLibroRepo.save(reservaLibro);
+    // Guardar
+    public MReservaLibro guardar(MReservaLibro reservaLibro) throws Exception {
+        try {
+            if (reservaLibro == null) {
+                throw new Exception("El registro ReservaLibro no puede ser nulo");
+            }
+            return reservaLibroRepo.save(reservaLibro);
+        } catch (Exception error) {
+            throw new Exception(error.getMessage());
+        }
     }
 
-    public void eliminar(Long id) {
-        reservaLibroRepo.deleteById(id);
+    // Eliminar
+    public void eliminar(Long id) throws Exception {
+        try {
+            if (!reservaLibroRepo.existsById(id)) {
+                throw new Exception("No se puede eliminar, ReservaLibro no encontrada con id: " + id);
+            }
+            reservaLibroRepo.deleteById(id);
+        } catch (Exception error) {
+            throw new Exception(error.getMessage());
+        }
     }
 }

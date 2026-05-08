@@ -3,9 +3,9 @@ package com.pi.proyecto_integrador_backend.Controlador;
 import com.pi.proyecto_integrador_backend.Modelo.MLibro;
 import com.pi.proyecto_integrador_backend.Servicios.SLibro;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/libros")
@@ -15,40 +15,64 @@ public class CLibro {
     @Autowired
     private SLibro sLibro;
 
-    //  Lista general
+    // Lista general
     @GetMapping
-    public List<MLibro> listarLibros() throws Exception {
-        return sLibro.listarLibros();
+    public ResponseEntity<?> listarLibros() {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(sLibro.listarLibros());
+        } catch (Exception error) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error.getMessage());
+        }
     }
 
-    //  Buscar por ID
+    // Buscar por ID
     @GetMapping("/{id}")
-    public MLibro consultarPorId(@PathVariable Integer id) throws Exception {
-        return sLibro.consultarPorId(id);
+    public ResponseEntity<?> consultarPorId(@PathVariable Integer id) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(sLibro.consultarPorId(id));
+        } catch (Exception error) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error.getMessage());
+        }
     }
 
-    //  Buscar por nombre
+    // Buscar por nombre
     @GetMapping("/buscar")
-    public List<MLibro> consultarPorNombre(@RequestParam String nombre) throws Exception {
-        return sLibro.consultarPorNombre(nombre);
+    public ResponseEntity<?> consultarPorNombre(@RequestParam String nombre) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(sLibro.consultarPorNombre(nombre));
+        } catch (Exception error) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error.getMessage());
+        }
     }
 
     // Agregar libro
     @PostMapping
-    public MLibro agregarLibro(@RequestBody MLibro libro) throws Exception {
-        return sLibro.agregarLibro(libro);
+    public ResponseEntity<?> agregarLibro(@RequestBody MLibro libro) {
+        try {
+            return ResponseEntity.status(HttpStatus.CREATED).body(sLibro.agregarLibro(libro));
+        } catch (Exception error) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error.getMessage());
+        }
     }
 
     // Modificar libro
     @PutMapping("/{id}")
-    public MLibro modificarLibro(@PathVariable Integer id, @RequestBody MLibro libro) throws Exception {
-        return sLibro.modificarLibro(id, libro);
+    public ResponseEntity<?> modificarLibro(@PathVariable Integer id, @RequestBody MLibro libro) {
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(sLibro.modificarLibro(id, libro));
+        } catch (Exception error) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error.getMessage());
+        }
     }
 
-    //  Eliminar libro
+    // Eliminar libro
     @DeleteMapping("/{id}")
-    public String eliminarLibro(@PathVariable Integer id) throws Exception {
-        sLibro.eliminarLibro(id);
-        return "Libro eliminado correctamente";
+    public ResponseEntity<?> eliminarLibro(@PathVariable Integer id) {
+        try {
+            sLibro.eliminarLibro(id);
+            return ResponseEntity.status(HttpStatus.OK).body("Libro eliminado correctamente");
+        } catch (Exception error) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error.getMessage());
+        }
     }
 }
