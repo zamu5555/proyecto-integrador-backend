@@ -3,52 +3,80 @@ package com.pi.proyecto_integrador_backend.Controlador;
 import com.pi.proyecto_integrador_backend.Modelo.MLibro;
 import com.pi.proyecto_integrador_backend.Servicios.SLibro;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/libros")
-@CrossOrigin("*")
+@CrossOrigin(origins = "*")
 public class CLibro {
 
     @Autowired
     private SLibro sLibro;
 
-    //  Lista general
+    // LISTAR
     @GetMapping
-    public List<MLibro> listarLibros() throws Exception {
-        return sLibro.listarLibros();
+    public ResponseEntity<List<MLibro>> listarLibros() throws Exception {
+
+        return ResponseEntity.ok(
+                sLibro.listarLibros()
+        );
     }
 
-    //  Buscar por ID
+    // BUSCAR POR ID
     @GetMapping("/{id}")
-    public MLibro consultarPorId(@PathVariable Integer id) throws Exception {
-        return sLibro.consultarPorId(id);
+    public ResponseEntity<MLibro> consultarPorId(
+            @PathVariable Long id) throws Exception {
+
+        MLibro libro = sLibro.consultarPorId(id);
+
+        return ResponseEntity.ok(libro);
     }
 
-    //  Buscar por nombre
+    // BUSCAR POR NOMBRE
     @GetMapping("/buscar")
-    public List<MLibro> consultarPorNombre(@RequestParam String nombre) throws Exception {
-        return sLibro.consultarPorNombre(nombre);
+    public ResponseEntity<List<MLibro>> consultarPorNombre(
+            @RequestParam String nombre) throws Exception {
+
+        return ResponseEntity.ok(
+                sLibro.consultarPorNombre(nombre)
+        );
     }
 
-    // Agregar libro
+    // AGREGAR
     @PostMapping
-    public MLibro agregarLibro(@RequestBody MLibro libro) throws Exception {
-        return sLibro.agregarLibro(libro);
+    public ResponseEntity<MLibro> agregarLibro(
+            @RequestBody MLibro libro) throws Exception {
+
+        MLibro nuevo = sLibro.agregarLibro(libro);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(nuevo);
     }
 
-    // Modificar libro
+    // MODIFICAR
     @PutMapping("/{id}")
-    public MLibro modificarLibro(@PathVariable Integer id, @RequestBody MLibro libro) throws Exception {
-        return sLibro.modificarLibro(id, libro);
+    public ResponseEntity<MLibro> modificarLibro(
+            @PathVariable Long id,
+            @RequestBody MLibro libro) throws Exception {
+
+        MLibro actualizado =
+                sLibro.modificarLibro(id, libro);
+
+        return ResponseEntity.ok(actualizado);
     }
 
-    //  Eliminar libro
+    // ELIMINAR
     @DeleteMapping("/{id}")
-    public String eliminarLibro(@PathVariable Integer id) throws Exception {
+    public ResponseEntity<String> eliminarLibro(
+            @PathVariable Long id) throws Exception {
+
         sLibro.eliminarLibro(id);
-        return "Libro eliminado correctamente";
+
+        return ResponseEntity.ok(
+                "Libro eliminado correctamente"
+        );
     }
 }

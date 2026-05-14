@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 public class MReservaLibro {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
@@ -21,11 +21,38 @@ public class MReservaLibro {
     @Column(nullable = false)
     private Integer cantidad;
 
-    public MReservaLibro() {}
+    public MReservaLibro() {
+    }
 
-    public MReservaLibro(MReserva reserva, MLibro libro, Integer cantidad) {
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public MReserva getReserva() {
+        return reserva;
+    }
+
+    public void setReserva(MReserva reserva) {
         this.reserva = reserva;
+    }
+
+    public MLibro getLibro() {
+        return libro;
+    }
+
+    public void setLibro(MLibro libro) {
         this.libro = libro;
+    }
+
+    public Integer getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(Integer cantidad) {
         this.cantidad = cantidad;
     }
 }

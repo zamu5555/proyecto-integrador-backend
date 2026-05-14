@@ -3,53 +3,79 @@ package com.pi.proyecto_integrador_backend.Controlador;
 import com.pi.proyecto_integrador_backend.Modelo.MEditorial;
 import com.pi.proyecto_integrador_backend.Servicios.SEditorial;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/editoriales")
-@CrossOrigin("*")
+@CrossOrigin(origins = "*")
 public class CEditorial {
 
     @Autowired
     private SEditorial sEditorial;
 
-    //  Lista general
+    // LISTAR
     @GetMapping
-    public List<MEditorial> listarEditoriales() throws Exception {
-        return sEditorial.listarEditoriales();
+    public ResponseEntity<List<MEditorial>> listarEditoriales() throws Exception {
+
+        return ResponseEntity.ok(
+                sEditorial.listarEditoriales()
+        );
     }
 
-    //  Buscar por ID
+    // BUSCAR POR ID
     @GetMapping("/{id}")
-    public MEditorial consultarPorId(@PathVariable Integer id) throws Exception {
-        return sEditorial.consultarPorId(id);
+    public ResponseEntity<MEditorial> consultarPorId(@PathVariable Long id) throws Exception {
+
+        MEditorial editorial = sEditorial.consultarPorId(id);
+
+        return ResponseEntity.ok(editorial);
     }
 
-    //  Buscar por nombre
+    // BUSCAR POR NOMBRE
     @GetMapping("/buscar")
-    public List<MEditorial> consultarPorNombre(@RequestParam String nombre) throws Exception {
-        return sEditorial.consultarPorNombre(nombre);
+    public ResponseEntity<List<MEditorial>> consultarPorNombre(
+            @RequestParam String nombre) throws Exception {
+
+        return ResponseEntity.ok(
+                sEditorial.consultarPorNombre(nombre)
+        );
     }
 
-    //  Agregar editorial
+    // AGREGAR
     @PostMapping
-    public MEditorial agregarEditorial(@RequestBody MEditorial editorial) throws Exception {
-        return sEditorial.agregarEditorial(editorial);
+    public ResponseEntity<MEditorial> agregarEditorial(
+            @RequestBody MEditorial editorial) throws Exception {
+
+        MEditorial nueva = sEditorial.agregarEditorial(editorial);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(nueva);
     }
 
-    //  Modificar editorial
+    // MODIFICAR
     @PutMapping("/{id}")
-    public MEditorial modificarEditorial(@PathVariable Integer id,
-                                         @RequestBody MEditorial editorial) throws Exception {
-        return sEditorial.modificarEditorial(id, editorial);
+    public ResponseEntity<MEditorial> modificarEditorial(
+            @PathVariable Long id,
+            @RequestBody MEditorial editorial) throws Exception {
+
+        MEditorial actualizada =
+                sEditorial.modificarEditorial(id, editorial);
+
+        return ResponseEntity.ok(actualizada);
     }
 
-    //  Eliminar editorial
+    // ELIMINAR
     @DeleteMapping("/{id}")
-    public String eliminarEditorial(@PathVariable Integer id) throws Exception {
+    public ResponseEntity<String> eliminarEditorial(
+            @PathVariable Long id) throws Exception {
+
         sEditorial.eliminarEditorial(id);
-        return "Editorial eliminada correctamente";
+
+        return ResponseEntity.ok(
+                "Editorial eliminada correctamente"
+        );
     }
 }

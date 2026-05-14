@@ -14,23 +14,87 @@ public class SReserva {
     @Autowired
     private IReserva iReserva;
 
-    public List<MReserva> listarReservas() {
-        return iReserva.findAll();
+    // LISTAR
+    public List<MReserva> listarReservas()
+            throws Exception {
+
+        try {
+
+            return iReserva.findAll();
+
+        } catch (Exception e) {
+
+            throw new Exception(e.getMessage());
+        }
     }
 
-    public Optional<MReserva> encontrarReserva(Integer id) {
-        return iReserva.findById(id);
+    // BUSCAR POR ID
+    public Optional<MReserva> encontrarReserva(
+            Long id) throws Exception {
+
+        try {
+
+            return iReserva.findById(id);
+
+        } catch (Exception e) {
+
+            throw new Exception(e.getMessage());
+        }
     }
 
-    public MReserva agregarReserva(MReserva reserva) {
-        return iReserva.save(reserva);
+    // GUARDAR
+    public MReserva agregarReserva(
+            MReserva reserva) throws Exception {
+
+        try {
+
+            if (reserva == null) {
+
+                throw new Exception(
+                        "La reserva no puede ser null"
+                );
+            }
+
+            return iReserva.save(reserva);
+
+        } catch (Exception e) {
+
+            throw new Exception(e.getMessage());
+        }
     }
 
-    public void eliminarReserva(Integer id) {
-        iReserva.deleteById(id);
+    // ELIMINAR
+    public void eliminarReserva(Long id)
+            throws Exception {
+
+        try {
+
+            if (!iReserva.existsById(id)) {
+
+                throw new Exception(
+                        "Reserva no encontrada"
+                );
+            }
+
+            iReserva.deleteById(id);
+
+        } catch (Exception e) {
+
+            throw new Exception(e.getMessage());
+        }
     }
 
-    public boolean existeReserva(Integer id) {
-        return iReserva.existsById(id);
+    // EXISTE
+    public boolean existeReserva(Long id)
+            throws Exception {
+
+        try {
+
+            return iReserva.existsById(id);
+
+        } catch (Exception e) {
+
+            throw new Exception(e.getMessage());
+        }
     }
 }

@@ -14,87 +14,143 @@ public class SLibro {
     @Autowired
     private ILibro iLibro;
 
-    //  Lista general
+    // LISTAR
     public List<MLibro> listarLibros() throws Exception {
+
         try {
+
             return iLibro.findAll();
-        } catch (Exception error) {
-            throw new Exception(error.getMessage());
+
+        } catch (Exception e) {
+
+            throw new Exception(e.getMessage());
         }
     }
 
-    //  Buscar por ID
-    public MLibro consultarPorId(Integer id) throws Exception {
+    // BUSCAR POR ID
+    public MLibro consultarPorId(Long id)
+            throws Exception {
+
         try {
-            Optional<MLibro> libro = iLibro.findById(id);
+
+            Optional<MLibro> libro =
+                    iLibro.findById(id);
 
             if (libro.isEmpty()) {
-                throw new Exception("Libro no encontrado con id: " + id);
+
+                throw new Exception(
+                        "Libro no encontrado"
+                );
             }
 
             return libro.get();
-        } catch (Exception error) {
-            throw new Exception(error.getMessage());
+
+        } catch (Exception e) {
+
+            throw new Exception(e.getMessage());
         }
     }
 
-    //  Consultar por nombre
-    public List<MLibro> consultarPorNombre(String nombre) throws Exception {
+    // BUSCAR POR NOMBRE
+    public List<MLibro> consultarPorNombre(
+            String nombre) throws Exception {
+
         try {
+
             if (nombre == null || nombre.trim().isEmpty()) {
-                throw new Exception("El nombre no puede estar vacío");
+
+                throw new Exception(
+                        "El nombre no puede estar vacío"
+                );
             }
 
             return iLibro.findByNombre(nombre);
-        } catch (Exception error) {
-            throw new Exception(error.getMessage());
+
+        } catch (Exception e) {
+
+            throw new Exception(e.getMessage());
         }
     }
 
-    // Agregar libro
-    public MLibro agregarLibro(MLibro libro) throws Exception {
+    // GUARDAR
+    public MLibro agregarLibro(MLibro libro)
+            throws Exception {
+
         try {
+
             if (libro == null) {
-                throw new Exception("El libro no puede ser null");
+
+                throw new Exception(
+                        "El libro no puede ser null"
+                );
             }
 
             return iLibro.save(libro);
-        } catch (Exception error) {
-            throw new Exception(error.getMessage());
+
+        } catch (Exception e) {
+
+            throw new Exception(e.getMessage());
         }
     }
 
-    //  Modificar libro
-    public MLibro modificarLibro(Integer id, MLibro libroActualizado) throws Exception {
+    // MODIFICAR
+    public MLibro modificarLibro(
+            Long id,
+            MLibro libroActualizado)
+            throws Exception {
+
         try {
-            Optional<MLibro> libroExistente = iLibro.findById(id);
+
+            Optional<MLibro> libroExistente =
+                    iLibro.findById(id);
 
             if (libroExistente.isEmpty()) {
-                throw new Exception("Libro no encontrado con id: " + id);
+
+                throw new Exception(
+                        "Libro no encontrado"
+                );
             }
 
             MLibro libro = libroExistente.get();
 
-            libro.setNombre(libroActualizado.getNombre());
-            libro.setAutor(libroActualizado.getAutor());
-            libro.setGenero(libroActualizado.getGenero());
+            libro.setNombre(
+                    libroActualizado.getNombre());
+
+            libro.setAutor(
+                    libroActualizado.getAutor());
+
+            libro.setGenero(
+                    libroActualizado.getGenero());
+
+            libro.setEditorial(
+                    libroActualizado.getEditorial());
 
             return iLibro.save(libro);
+
         } catch (Exception e) {
-            throw new Exception("Error al modificar libro: " + e.getMessage());
+
+            throw new Exception(e.getMessage());
         }
     }
 
-    //  Eliminar libro
-    public void eliminarLibro(Integer id) throws Exception {
+    // ELIMINAR
+    public void eliminarLibro(Long id)
+            throws Exception {
+
         try {
+
             if (!iLibro.existsById(id)) {
-                throw new Exception("Libro no encontrado con id: " + id);
+
+                throw new Exception(
+                        "Libro no encontrado"
+                );
             }
 
             iLibro.deleteById(id);
-        } catch (Exception error) {
-            throw new Exception(error.getMessage());
+
+        } catch (Exception e) {
+
+            throw new Exception(e.getMessage());
         }
     }
 }

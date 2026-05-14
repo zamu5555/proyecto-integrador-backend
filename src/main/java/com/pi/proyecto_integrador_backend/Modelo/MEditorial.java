@@ -1,6 +1,8 @@
 package com.pi.proyecto_integrador_backend.Modelo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+
 import java.util.List;
 
 @Entity
@@ -8,28 +10,25 @@ import java.util.List;
 public class MEditorial {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "editorial_id")
-    private long editorialId;
+    private Long editorialId;
 
     @Column(name = "nombre_editorial", length = 50, nullable = false)
     private String nombreEditorial;
 
     @OneToMany(mappedBy = "editorial", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<MLibro> libros;
 
-    public MEditorial() {}
-
-    public MEditorial(long editorialId, String nombreEditorial) {
-        this.editorialId = editorialId;
-        this.nombreEditorial = nombreEditorial;
+    public MEditorial() {
     }
 
-    public long getEditorialId() {
+    public Long getEditorialId() {
         return editorialId;
     }
 
-    public void setEditorialId(long editorialId) {
+    public void setEditorialId(Long editorialId) {
         this.editorialId = editorialId;
     }
 

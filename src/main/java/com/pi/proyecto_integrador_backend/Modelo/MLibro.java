@@ -1,6 +1,8 @@
 package com.pi.proyecto_integrador_backend.Modelo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+
 import java.util.List;
 
 @Entity
@@ -8,9 +10,9 @@ import java.util.List;
 public class MLibro {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "libro_id")
-    private long libroId;
+    private Long libroId;
 
     @Column(length = 70, nullable = false)
     private String nombre;
@@ -26,23 +28,17 @@ public class MLibro {
     private MEditorial editorial;
 
     @OneToMany(mappedBy = "libro", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<MReservaLibro> reservaLibros;
 
-    public MLibro() {}
-
-    public MLibro(long libroId, String nombre, String genero, String autor, MEditorial editorial) {
-        this.libroId = libroId;
-        this.nombre = nombre;
-        this.genero = genero;
-        this.autor = autor;
-        this.editorial = editorial;
+    public MLibro() {
     }
 
-    public long getLibroId() {
+    public Long getLibroId() {
         return libroId;
     }
 
-    public void setLibroId(long libroId) {
+    public void setLibroId(Long libroId) {
         this.libroId = libroId;
     }
 
@@ -76,5 +72,13 @@ public class MLibro {
 
     public void setEditorial(MEditorial editorial) {
         this.editorial = editorial;
+    }
+
+    public List<MReservaLibro> getReservaLibros() {
+        return reservaLibros;
+    }
+
+    public void setReservaLibros(List<MReservaLibro> reservaLibros) {
+        this.reservaLibros = reservaLibros;
     }
 }

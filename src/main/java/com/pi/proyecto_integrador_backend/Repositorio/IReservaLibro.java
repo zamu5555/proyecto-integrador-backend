@@ -8,8 +8,10 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface IReservaLibro extends JpaRepository<MReservaLibro, Long> {
+public interface IReservaLibro
+        extends JpaRepository<MReservaLibro, Long> {
 
-    List<MReservaLibro> findByReserva(MReserva reserva);
-
+    // BUSCAR POR RESERVA
+    List<MReservaLibro> findByReserva(
+            MReserva reserva);
 }

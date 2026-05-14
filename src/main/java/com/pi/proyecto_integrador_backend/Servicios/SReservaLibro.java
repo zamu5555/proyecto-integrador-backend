@@ -1,4 +1,4 @@
-package com.pi.proyecto_integrador_backend.Servicio;
+package com.pi.proyecto_integrador_backend.Servicios;
 
 import com.pi.proyecto_integrador_backend.Modelo.MReserva;
 import com.pi.proyecto_integrador_backend.Modelo.MReservaLibro;
@@ -15,23 +15,102 @@ public class SReservaLibro {
     @Autowired
     private IReservaLibro reservaLibroRepo;
 
-    public List<MReservaLibro> listar() {
-        return reservaLibroRepo.findAll();
+    // LISTAR
+    public List<MReservaLibro> listar()
+            throws Exception {
+
+        try {
+
+            return reservaLibroRepo.findAll();
+
+        } catch (Exception e) {
+
+            throw new Exception(e.getMessage());
+        }
     }
 
-    public Optional<MReservaLibro> buscarPorId(Long id) {
-        return reservaLibroRepo.findById(id);
+    // BUSCAR POR ID
+    public Optional<MReservaLibro> buscarPorId(
+            Long id) throws Exception {
+
+        try {
+
+            return reservaLibroRepo.findById(id);
+
+        } catch (Exception e) {
+
+            throw new Exception(e.getMessage());
+        }
     }
 
-    public List<MReservaLibro> buscarPorReserva(MReserva reserva) {
-        return reservaLibroRepo.findByReserva(reserva);
+    // BUSCAR POR RESERVA
+    public List<MReservaLibro> buscarPorReserva(
+            MReserva reserva) throws Exception {
+
+        try {
+
+            return reservaLibroRepo.findByReserva(reserva);
+
+        } catch (Exception e) {
+
+            throw new Exception(e.getMessage());
+        }
     }
 
-    public MReservaLibro guardar(MReservaLibro reservaLibro) {
-        return reservaLibroRepo.save(reservaLibro);
+    // GUARDAR
+    public MReservaLibro guardar(
+            MReservaLibro reservaLibro)
+            throws Exception {
+
+        try {
+
+            if (reservaLibro == null) {
+
+                throw new Exception(
+                        "El objeto no puede ser null"
+                );
+            }
+
+            if (reservaLibro.getLibro() == null) {
+
+                throw new Exception(
+                        "Debe seleccionar un libro"
+                );
+            }
+
+            if (reservaLibro.getReserva() == null) {
+
+                throw new Exception(
+                        "Debe seleccionar una reserva"
+                );
+            }
+
+            return reservaLibroRepo.save(reservaLibro);
+
+        } catch (Exception e) {
+
+            throw new Exception(e.getMessage());
+        }
     }
 
-    public void eliminar(Long id) {
-        reservaLibroRepo.deleteById(id);
+    // ELIMINAR
+    public void eliminar(Long id)
+            throws Exception {
+
+        try {
+
+            if (!reservaLibroRepo.existsById(id)) {
+
+                throw new Exception(
+                        "Registro no encontrado"
+                );
+            }
+
+            reservaLibroRepo.deleteById(id);
+
+        } catch (Exception e) {
+
+            throw new Exception(e.getMessage());
+        }
     }
 }

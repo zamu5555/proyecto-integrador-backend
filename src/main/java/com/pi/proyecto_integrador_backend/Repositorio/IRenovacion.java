@@ -8,10 +8,10 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Repository
+public interface IRenovacion
+        extends JpaRepository<MRenovacion, Long> {
 
-public interface IRenovacion extends JpaRepository<MRenovacion,Integer>  {
-
-    public List<MRenovacion> findByRenovacionId(long renovacionId);
-
-    public  List<MRenovacion> findByfechaRenovacion(LocalDate fechaRenovacion);
+    // BUSCAR POR FECHA
+    List<MRenovacion> findByFechaRenovacion(
+            LocalDate fechaRenovacion);
 }

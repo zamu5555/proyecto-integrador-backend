@@ -8,11 +8,20 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
+public interface IEditorial
+        extends JpaRepository<MEditorial, Long> {
 
-public interface IEditorial extends JpaRepository<MEditorial, Integer> {
+    // BUSCAR POR NOMBRE EXACTO
+    List<MEditorial> findByNombreEditorial(
+            String nombreEditorial);
 
-    List<MEditorial> findByNombreEditorial(String nombreEditorial);
-
-    @Query("SELECT e FROM MEditorial e WHERE e.nombreEditorial LIKE %:nombre%")
-    List<MEditorial> buscarPorNombre(String nombre);
+    // BUSCAR POR NOMBRE LIKE
+    @Query("""
+            SELECT e
+            FROM MEditorial e
+            WHERE e.nombreEditorial
+            LIKE %:nombre%
+            """)
+    List<MEditorial> buscarPorNombre(
+            String nombre);
 }

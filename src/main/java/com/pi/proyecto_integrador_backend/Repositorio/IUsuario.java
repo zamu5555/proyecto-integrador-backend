@@ -7,8 +7,10 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface IUsuario extends JpaRepository<MUsuario, Long> {
+public interface IUsuario
+        extends JpaRepository<MUsuario, Long> {
 
-    Optional<MUsuario> findByDocumento(String documento);
-
+    // BUSCAR POR DOCUMENTO
+    Optional<MUsuario> findByDocumento(
+            String documento);
 }

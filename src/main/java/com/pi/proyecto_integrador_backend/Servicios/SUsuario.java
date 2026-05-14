@@ -1,4 +1,4 @@
-package com.pi.proyecto_integrador_backend.Servicio;
+package com.pi.proyecto_integrador_backend.Servicios;
 
 import com.pi.proyecto_integrador_backend.Modelo.MUsuario;
 import com.pi.proyecto_integrador_backend.Repositorio.IUsuario;
@@ -14,23 +14,87 @@ public class SUsuario {
     @Autowired
     private IUsuario usuarioRepo;
 
-    public List<MUsuario> listar() {
-        return usuarioRepo.findAll();
+    // LISTAR
+    public List<MUsuario> listar()
+            throws Exception {
+
+        try {
+
+            return usuarioRepo.findAll();
+
+        } catch (Exception e) {
+
+            throw new Exception(e.getMessage());
+        }
     }
 
-    public Optional<MUsuario> buscarPorId(Long id) {
-        return usuarioRepo.findById(id);
+    // BUSCAR POR ID
+    public Optional<MUsuario> buscarPorId(
+            Long id) throws Exception {
+
+        try {
+
+            return usuarioRepo.findById(id);
+
+        } catch (Exception e) {
+
+            throw new Exception(e.getMessage());
+        }
     }
 
-    public Optional<MUsuario> buscarPorDocumento(String documento) {
-        return usuarioRepo.findByDocumento(documento);
+    // BUSCAR POR DOCUMENTO
+    public Optional<MUsuario> buscarPorDocumento(
+            String documento) throws Exception {
+
+        try {
+
+            return usuarioRepo.findByDocumento(documento);
+
+        } catch (Exception e) {
+
+            throw new Exception(e.getMessage());
+        }
     }
 
-    public MUsuario guardar(MUsuario usuario) {
-        return usuarioRepo.save(usuario);
+    // GUARDAR
+    public MUsuario guardar(MUsuario usuario)
+            throws Exception {
+
+        try {
+
+            if (usuario == null) {
+
+                throw new Exception(
+                        "El usuario no puede ser null"
+                );
+            }
+
+            return usuarioRepo.save(usuario);
+
+        } catch (Exception e) {
+
+            throw new Exception(e.getMessage());
+        }
     }
 
-    public void eliminar(Long id) {
-        usuarioRepo.deleteById(id);
+    // ELIMINAR
+    public void eliminar(Long id)
+            throws Exception {
+
+        try {
+
+            if (!usuarioRepo.existsById(id)) {
+
+                throw new Exception(
+                        "Usuario no encontrado"
+                );
+            }
+
+            usuarioRepo.deleteById(id);
+
+        } catch (Exception e) {
+
+            throw new Exception(e.getMessage());
+        }
     }
 }
