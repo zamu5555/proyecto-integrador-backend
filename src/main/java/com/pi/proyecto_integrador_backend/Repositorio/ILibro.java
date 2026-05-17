@@ -10,5 +10,5 @@ import java.util.List;
 public interface ILibro
         extends JpaRepository<MLibro, Long> {
 
-    List<MLibro> findByNombre(String nombre);
+    List<MLibro> findByNombreContainingIgnoreCase(String nombre);
 }

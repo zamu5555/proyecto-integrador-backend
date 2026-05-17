@@ -64,7 +64,8 @@ public class SLibro {
                 );
             }
 
-            return iLibro.findByNombre(nombre);
+            return iLibro
+                    .findByNombreContainingIgnoreCase(nombre);
 
         } catch (Exception e) {
 
@@ -121,6 +122,9 @@ public class SLibro {
 
             libro.setGenero(
                     libroActualizado.getGenero());
+
+            libro.setImagen(
+                    libroActualizado.getImagen());
 
             libro.setEditorial(
                     libroActualizado.getEditorial());

@@ -1,7 +1,8 @@
 package com.pi.proyecto_integrador_backend.Servicios;
 
-import com.pi.proyecto_integrador_backend.Modelo.MReserva;
-import com.pi.proyecto_integrador_backend.Repositorio.IReserva;
+import com.pi.proyecto_integrador_backend.Dto.ReservaCompletaDto;
+import com.pi.proyecto_integrador_backend.Modelo.*;
+import com.pi.proyecto_integrador_backend.Repositorio.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,87 +15,62 @@ public class SReserva {
     @Autowired
     private IReserva iReserva;
 
+    @Autowired
+    private IReservaLibro iReservaLibro;
+
+    @Autowired
+    private IUsuario iUsuario;
+
+    @Autowired
+    private ILibro iLibro;
+
     // LISTAR
-    public List<MReserva> listarReservas()
-            throws Exception {
-
-        try {
-
-            return iReserva.findAll();
-
-        } catch (Exception e) {
-
-            throw new Exception(e.getMessage());
-        }
+    public List<MReserva> listarReservas() {
+        return iReserva.findAll();
     }
 
-    // BUSCAR POR ID
-    public Optional<MReserva> encontrarReserva(
-            Long id) throws Exception {
-
-        try {
-
-            return iReserva.findById(id);
-
-        } catch (Exception e) {
-
-            throw new Exception(e.getMessage());
-        }
+    // BUSCAR
+    public Optional<MReserva> encontrarReserva(Long id) {
+        return iReserva.findById(id);
     }
 
-    // GUARDAR
-    public MReserva agregarReserva(
-            MReserva reserva) throws Exception {
+    public MReserva guardarReservaCompleta(ReservaCompletaDto dto) throws Exception {
 
-        try {
+        MUsuario usuario = iUsuario.findById(dto.getUsuarioId())
+                .orElseThrow(() -> new Exception("Usuario no encontrado"));
 
-            if (reserva == null) {
+        MLibro libro = iLibro.findById(dto.getLibroId())
+                .orElseThrow(() -> new Exception("Libro no encontrado"));
 
-                throw new Exception(
-                        "La reserva no puede ser null"
-                );
-            }
+        // 1. Crear reserva
+        MReserva reserva = new MReserva();
+        reserva.setUsuario(usuario);
+        reserva.setTipoReserva(dto.getTipoReserva());
+        reserva.setFechaPrestamo(dto.getFechaPrestamo());
+        reserva.setFechaDevolucion(dto.getFechaDevolucion());
 
-            return iReserva.save(reserva);
+        MReserva reservaGuardada = iReserva.save(reserva);
 
-        } catch (Exception e) {
+        // 2. Crear relación reserva_libro
+        MReservaLibro rl = new MReservaLibro();
+        rl.setReserva(reservaGuardada);
+        rl.setLibro(libro);
+        rl.setCantidad(1);
 
-            throw new Exception(e.getMessage());
-        }
+        iReservaLibro.save(rl);
+
+        return reservaGuardada;
     }
 
     // ELIMINAR
-    public void eliminarReserva(Long id)
-            throws Exception {
-
-        try {
-
-            if (!iReserva.existsById(id)) {
-
-                throw new Exception(
-                        "Reserva no encontrada"
-                );
-            }
-
-            iReserva.deleteById(id);
-
-        } catch (Exception e) {
-
-            throw new Exception(e.getMessage());
+    public void eliminarReserva(Long id) throws Exception {
+        if (!iReserva.existsById(id)) {
+            throw new Exception("Reserva no encontrada");
         }
+        iReserva.deleteById(id);
     }
 
-    // EXISTE
-    public boolean existeReserva(Long id)
-            throws Exception {
-
-        try {
-
-            return iReserva.existsById(id);
-
-        } catch (Exception e) {
-
-            throw new Exception(e.getMessage());
-        }
+    public boolean existeReserva(Long id) {
+        return iReserva.existsById(id);
     }
 }

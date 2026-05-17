@@ -20,11 +20,14 @@ public class MUsuario {
     @Column(length = 30, nullable = false, unique = true)
     private String documento;
 
-    @Column(length = 30)
+    @Column(length = 15)
     private String telefono;
 
-    @Column(length = 40)
+    @Column(length = 40, nullable = false, unique = true)
     private String correo;
+
+    @Column(name = "contraseña", length = 100, nullable = false)
+    private String contraseña;
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
     @JsonIgnore
@@ -71,6 +74,14 @@ public class MUsuario {
 
     public void setCorreo(String correo) {
         this.correo = correo;
+    }
+
+    public String getContraseña() {
+        return contraseña;
+    }
+
+    public void setContraseña(String contraseña) {
+        this.contraseña = contraseña;
     }
 
     public List<MReserva> getReservas() {

@@ -1,5 +1,6 @@
 package com.pi.proyecto_integrador_backend.Controlador;
 
+import com.pi.proyecto_integrador_backend.Dto.UsuarioDto;
 import com.pi.proyecto_integrador_backend.Modelo.MUsuario;
 import com.pi.proyecto_integrador_backend.Servicios.SUsuario;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,20 +20,13 @@ public class CUsuario {
 
     // LISTAR
     @GetMapping
-    public ResponseEntity<List<MUsuario>> listar()
-            throws Exception {
-
-        return ResponseEntity.ok(
-                usuarioService.listar()
-        );
+    public ResponseEntity<List<MUsuario>> listar() throws Exception {
+        return ResponseEntity.ok(usuarioService.listar());
     }
 
     // BUSCAR POR ID
     @GetMapping("/{id}")
-    public ResponseEntity<MUsuario> buscarPorId(
-            @PathVariable Long id)
-            throws Exception {
-
+    public ResponseEntity<MUsuario> buscarPorId(@PathVariable Long id) throws Exception {
         return usuarioService.buscarPorId(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -40,53 +34,55 @@ public class CUsuario {
 
     // BUSCAR POR DOCUMENTO
     @GetMapping("/documento/{doc}")
-    public ResponseEntity<MUsuario> buscarPorDocumento(
-            @PathVariable String doc)
-            throws Exception {
-
+    public ResponseEntity<MUsuario> buscarPorDocumento(@PathVariable String doc) throws Exception {
         return usuarioService.buscarPorDocumento(doc)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // AGREGAR
+    // AGREGAR (DTO)
     @PostMapping
-    public ResponseEntity<MUsuario> guardar(
-            @RequestBody MUsuario usuario)
-            throws Exception {
+    public ResponseEntity<MUsuario> guardar(@RequestBody UsuarioDto dto) throws Exception {
 
-        MUsuario nuevo =
-                usuarioService.guardar(usuario);
+        MUsuario usuario = new MUsuario();
 
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(nuevo);
+        usuario.setNombre(dto.getNombre());
+        usuario.setDocumento(dto.getDocumento());
+        usuario.setTelefono(dto.getTelefono());
+        usuario.setCorreo(dto.getCorreo());
+        usuario.setContraseña(dto.getContraseña());
+
+        MUsuario nuevo = usuarioService.guardar(usuario);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(nuevo);
     }
 
-    // MODIFICAR
+    // ACTUALIZAR (DTO)
     @PutMapping("/{id}")
     public ResponseEntity<MUsuario> actualizar(
             @PathVariable Long id,
-            @RequestBody MUsuario usuario)
-            throws Exception {
+            @RequestBody UsuarioDto dto) throws Exception {
 
-        usuario.setUsuarioId(id);
+        MUsuario usuario = usuarioService.buscarPorId(id)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
-        MUsuario actualizado =
-                usuarioService.guardar(usuario);
+        usuario.setNombre(dto.getNombre());
+        usuario.setDocumento(dto.getDocumento());
+        usuario.setTelefono(dto.getTelefono());
+        usuario.setCorreo(dto.getCorreo());
+        usuario.setContraseña(dto.getContraseña());
+
+        MUsuario actualizado = usuarioService.guardar(usuario);
 
         return ResponseEntity.ok(actualizado);
     }
 
     // ELIMINAR
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> eliminar(
-            @PathVariable Long id)
-            throws Exception {
+    public ResponseEntity<String> eliminar(@PathVariable Long id) throws Exception {
 
         usuarioService.eliminar(id);
 
-        return ResponseEntity.ok(
-                "Usuario eliminado correctamente"
-        );
+        return ResponseEntity.ok("Usuario eliminado correctamente");
     }
 }

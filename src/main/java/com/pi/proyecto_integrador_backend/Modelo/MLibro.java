@@ -23,6 +23,9 @@ public class MLibro {
     @Column(length = 50, nullable = false)
     private String autor;
 
+    @Column(length = 500)
+    private String imagen;
+
     @ManyToOne
     @JoinColumn(name = "editorial_id")
     private MEditorial editorial;
@@ -64,6 +67,14 @@ public class MLibro {
 
     public void setAutor(String autor) {
         this.autor = autor;
+    }
+
+    public String getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(String imagen) {
+        this.imagen = imagen;
     }
 
     public MEditorial getEditorial() {
