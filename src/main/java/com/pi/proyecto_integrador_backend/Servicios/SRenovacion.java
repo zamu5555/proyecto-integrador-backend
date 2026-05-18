@@ -1,7 +1,10 @@
 package com.pi.proyecto_integrador_backend.Servicios;
 
+import com.pi.proyecto_integrador_backend.Modelo.MReserva;
 import com.pi.proyecto_integrador_backend.Modelo.MRenovacion;
+import com.pi.proyecto_integrador_backend.Repositorio.IReserva;
 import com.pi.proyecto_integrador_backend.Repositorio.IRenovacion;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +16,9 @@ public class SRenovacion {
 
     @Autowired
     private IRenovacion iRenovacion;
+
+    @Autowired
+    private IReserva iReserva;
 
     // LISTA GENERAL
     public List<MRenovacion> listarRenovaciones() throws Exception {
@@ -55,7 +61,45 @@ public class SRenovacion {
                 );
             }
 
-            return iRenovacion.save(renovacion);
+            if (renovacion.getReserva() == null) {
+
+                throw new Exception(
+                        "La reserva es obligatoria"
+                );
+            }
+
+            Long reservaId =
+
+                    renovacion
+                            .getReserva()
+                            .getReservaId();
+
+            MReserva reserva =
+
+                    iReserva.findById(reservaId)
+                            .orElseThrow(() ->
+                                    new Exception(
+                                            "Reserva no encontrada"
+                                    )
+                            );
+
+            LocalDate nuevaFecha =
+
+                    reserva
+                            .getFechaDevolucion()
+                            .plusDays(7);
+
+            reserva.setFechaDevolucion(
+                    nuevaFecha
+            );
+
+            iReserva.save(reserva);
+
+            renovacion.setReserva(reserva);
+
+            return iRenovacion.save(
+                    renovacion
+            );
 
         } catch (Exception e) {
 
