@@ -18,35 +18,95 @@ public class CReserva {
     @Autowired
     private SReserva sReserva;
 
+    // LISTAR
     @GetMapping
-    public ResponseEntity<List<MReserva>> listar() {
-        return ResponseEntity.ok(sReserva.listarReservas());
+    public ResponseEntity<?> listar() {
+
+        try {
+
+            return ResponseEntity.ok(
+                    sReserva.listarReservas()
+            );
+
+        } catch (Exception e) {
+
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(e.getMessage());
+        }
     }
 
+    // BUSCAR
     @GetMapping("/{id}")
-    public ResponseEntity<MReserva> buscar(@PathVariable Long id) throws Exception {
-        return sReserva.encontrarReserva(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<?> buscar(@PathVariable Long id) {
+
+        try {
+
+            return sReserva.encontrarReserva(id)
+                    .map(ResponseEntity::ok)
+                    .orElse(ResponseEntity.notFound().build());
+
+        } catch (Exception e) {
+
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(e.getMessage());
+        }
     }
 
-    // 🔥 NUEVO POST CORRECTO
+    // AGREGAR
     @PostMapping
-    public ResponseEntity<MReserva> guardar(@RequestBody ReservaCompletaDto dto) throws Exception {
+    public ResponseEntity<?> guardar(@RequestBody ReservaCompletaDto dto) {
 
-        MReserva reserva = sReserva.guardarReservaCompleta(dto);
+        try {
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(reserva);
+            MReserva reserva = sReserva.guardarReservaCompleta(dto);
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(reserva);
+
+        } catch (Exception e) {
+
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(e.getMessage());
+        }
     }
 
+    // ELIMINAR
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> eliminar(@PathVariable Long id) throws Exception {
-        sReserva.eliminarReserva(id);
-        return ResponseEntity.ok("Reserva eliminada correctamente");
+    public ResponseEntity<?> eliminar(@PathVariable Long id) {
+
+        try {
+
+            sReserva.eliminarReserva(id);
+
+            return ResponseEntity.ok(
+                    "Reserva eliminada correctamente"
+            );
+
+        } catch (Exception e) {
+
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(e.getMessage());
+        }
     }
 
+    // EXISTE
     @GetMapping("/existe/{id}")
-    public ResponseEntity<Boolean> existe(@PathVariable Long id) {
-        return ResponseEntity.ok(sReserva.existeReserva(id));
+    public ResponseEntity<?> existe(@PathVariable Long id) {
+
+        try {
+
+            return ResponseEntity.ok(
+                    sReserva.existeReserva(id)
+            );
+
+        } catch (Exception e) {
+
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(e.getMessage());
+        }
     }
 }

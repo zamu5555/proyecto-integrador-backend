@@ -26,51 +26,78 @@ public class SReserva {
 
     // LISTAR
     public List<MReserva> listarReservas() {
-        return iReserva.findAll();
+        try {
+            return iReserva.findAll();
+        } catch (Exception e) {
+            throw new RuntimeException("Error al listar reservas: " + e.getMessage());
+        }
     }
 
     // BUSCAR
     public Optional<MReserva> encontrarReserva(Long id) {
-        return iReserva.findById(id);
+        try {
+            return iReserva.findById(id);
+        } catch (Exception e) {
+            throw new RuntimeException("Error al buscar reserva: " + e.getMessage());
+        }
     }
 
     public MReserva guardarReservaCompleta(ReservaCompletaDto dto) throws Exception {
 
-        MUsuario usuario = iUsuario.findById(dto.getUsuarioId())
-                .orElseThrow(() -> new Exception("Usuario no encontrado"));
+        try {
 
-        MLibro libro = iLibro.findById(dto.getLibroId())
-                .orElseThrow(() -> new Exception("Libro no encontrado"));
+            MUsuario usuario = iUsuario.findById(dto.getUsuarioId())
+                    .orElseThrow(() -> new Exception("Usuario no encontrado"));
 
-        // 1. Crear reserva
-        MReserva reserva = new MReserva();
-        reserva.setUsuario(usuario);
-        reserva.setTipoReserva(dto.getTipoReserva());
-        reserva.setFechaPrestamo(dto.getFechaPrestamo());
-        reserva.setFechaDevolucion(dto.getFechaDevolucion());
+            MLibro libro = iLibro.findById(dto.getLibroId())
+                    .orElseThrow(() -> new Exception("Libro no encontrado"));
 
-        MReserva reservaGuardada = iReserva.save(reserva);
+            // 1. Crear reserva
+            MReserva reserva = new MReserva();
+            reserva.setUsuario(usuario);
+            reserva.setTipoReserva(dto.getTipoReserva());
+            reserva.setFechaPrestamo(dto.getFechaPrestamo());
+            reserva.setFechaDevolucion(dto.getFechaDevolucion());
 
-        // 2. Crear relación reserva_libro
-        MReservaLibro rl = new MReservaLibro();
-        rl.setReserva(reservaGuardada);
-        rl.setLibro(libro);
-        rl.setCantidad(1);
+            MReserva reservaGuardada = iReserva.save(reserva);
 
-        iReservaLibro.save(rl);
+            // 2. Crear relación reserva_libro
+            MReservaLibro rl = new MReservaLibro();
+            rl.setReserva(reservaGuardada);
+            rl.setLibro(libro);
+            rl.setCantidad(1);
 
-        return reservaGuardada;
+            iReservaLibro.save(rl);
+
+            return reservaGuardada;
+
+        } catch (Exception e) {
+            throw new Exception("Error al guardar reserva completa: " + e.getMessage());
+        }
     }
 
     // ELIMINAR
     public void eliminarReserva(Long id) throws Exception {
-        if (!iReserva.existsById(id)) {
-            throw new Exception("Reserva no encontrada");
+
+        try {
+
+            if (!iReserva.existsById(id)) {
+                throw new Exception("Reserva no encontrada");
+            }
+
+            iReserva.deleteById(id);
+
+        } catch (Exception e) {
+            throw new Exception("Error al eliminar reserva: " + e.getMessage());
         }
-        iReserva.deleteById(id);
     }
 
     public boolean existeReserva(Long id) {
-        return iReserva.existsById(id);
+
+        try {
+            return iReserva.existsById(id);
+        } catch (Exception e) {
+            throw new RuntimeException("Error al verificar reserva: " + e.getMessage());
+        }
     }
 }

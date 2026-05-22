@@ -19,63 +19,117 @@ public class CEditorial {
 
     // LISTAR
     @GetMapping
-    public ResponseEntity<List<MEditorial>> listarEditoriales() throws Exception {
+    public ResponseEntity<?> listarEditoriales() {
 
-        return ResponseEntity.ok(
-                sEditorial.listarEditoriales()
-        );
+        try {
+
+            return ResponseEntity.ok(
+                    sEditorial.listarEditoriales()
+            );
+
+        } catch (Exception e) {
+
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(e.getMessage());
+        }
     }
 
     // BUSCAR POR ID
     @GetMapping("/{id}")
-    public ResponseEntity<MEditorial> consultarPorId(@PathVariable Long id) throws Exception {
+    public ResponseEntity<?> consultarPorId(@PathVariable Long id) {
 
-        MEditorial editorial = sEditorial.consultarPorId(id);
+        try {
 
-        return ResponseEntity.ok(editorial);
+            MEditorial editorial = sEditorial.consultarPorId(id);
+
+            return ResponseEntity.ok(editorial);
+
+        } catch (Exception e) {
+
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(e.getMessage());
+        }
     }
 
     // BUSCAR POR NOMBRE
     @GetMapping("/buscar")
-    public ResponseEntity<List<MEditorial>> consultarPorNombre(
-            @RequestParam String nombre) throws Exception {
+    public ResponseEntity<?> consultarPorNombre(
+            @RequestParam String nombre) {
 
-        return ResponseEntity.ok(
-                sEditorial.consultarPorNombre(nombre)
-        );
+        try {
+
+            return ResponseEntity.ok(
+                    sEditorial.consultarPorNombre(nombre)
+            );
+
+        } catch (Exception e) {
+
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(e.getMessage());
+        }
     }
 
     // AGREGAR
     @PostMapping
-    public ResponseEntity<MEditorial> agregarEditorial(
-            @RequestBody MEditorial editorial) throws Exception {
+    public ResponseEntity<?> agregarEditorial(
+            @RequestBody MEditorial editorial) {
 
-        MEditorial nueva = sEditorial.agregarEditorial(editorial);
+        try {
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(nueva);
+            MEditorial nueva = sEditorial.agregarEditorial(editorial);
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(nueva);
+
+        } catch (Exception e) {
+
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(e.getMessage());
+        }
     }
 
     // MODIFICAR
     @PutMapping("/{id}")
-    public ResponseEntity<MEditorial> modificarEditorial(
+    public ResponseEntity<?> modificarEditorial(
             @PathVariable Long id,
-            @RequestBody MEditorial editorial) throws Exception {
+            @RequestBody MEditorial editorial) {
 
-        MEditorial actualizada =
-                sEditorial.modificarEditorial(id, editorial);
+        try {
 
-        return ResponseEntity.ok(actualizada);
+            MEditorial actualizada =
+                    sEditorial.modificarEditorial(id, editorial);
+
+            return ResponseEntity.ok(actualizada);
+
+        } catch (Exception e) {
+
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(e.getMessage());
+        }
     }
 
     // ELIMINAR
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> eliminarEditorial(
-            @PathVariable Long id) throws Exception {
+    public ResponseEntity<?> eliminarEditorial(
+            @PathVariable Long id) {
 
-        sEditorial.eliminarEditorial(id);
+        try {
 
-        return ResponseEntity.ok(
-                "Editorial eliminada correctamente"
-        );
+            sEditorial.eliminarEditorial(id);
+
+            return ResponseEntity.ok(
+                    "Editorial eliminada correctamente"
+            );
+
+        } catch (Exception e) {
+
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(e.getMessage());
+        }
     }
 }

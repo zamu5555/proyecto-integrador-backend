@@ -20,69 +20,130 @@ public class CUsuario {
 
     // LISTAR
     @GetMapping
-    public ResponseEntity<List<MUsuario>> listar() throws Exception {
-        return ResponseEntity.ok(usuarioService.listar());
+    public ResponseEntity<?> listar() {
+
+        try {
+
+            return ResponseEntity.ok(
+                    usuarioService.listar()
+            );
+
+        } catch (Exception e) {
+
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(e.getMessage());
+        }
     }
 
     // BUSCAR POR ID
     @GetMapping("/{id}")
-    public ResponseEntity<MUsuario> buscarPorId(@PathVariable Long id) throws Exception {
-        return usuarioService.buscarPorId(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<?> buscarPorId(@PathVariable Long id) {
+
+        try {
+
+            return usuarioService.buscarPorId(id)
+                    .map(ResponseEntity::ok)
+                    .orElse(ResponseEntity.notFound().build());
+
+        } catch (Exception e) {
+
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(e.getMessage());
+        }
     }
 
     // BUSCAR POR DOCUMENTO
     @GetMapping("/documento/{doc}")
-    public ResponseEntity<MUsuario> buscarPorDocumento(@PathVariable String doc) throws Exception {
-        return usuarioService.buscarPorDocumento(doc)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<?> buscarPorDocumento(@PathVariable String doc) {
+
+        try {
+
+            return usuarioService.buscarPorDocumento(doc)
+                    .map(ResponseEntity::ok)
+                    .orElse(ResponseEntity.notFound().build());
+
+        } catch (Exception e) {
+
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(e.getMessage());
+        }
     }
 
     // AGREGAR (DTO)
     @PostMapping
-    public ResponseEntity<MUsuario> guardar(@RequestBody UsuarioDto dto) throws Exception {
+    public ResponseEntity<?> guardar(@RequestBody UsuarioDto dto) {
 
-        MUsuario usuario = new MUsuario();
+        try {
 
-        usuario.setNombre(dto.getNombre());
-        usuario.setDocumento(dto.getDocumento());
-        usuario.setTelefono(dto.getTelefono());
-        usuario.setCorreo(dto.getCorreo());
-        usuario.setContraseña(dto.getContraseña());
+            MUsuario usuario = new MUsuario();
 
-        MUsuario nuevo = usuarioService.guardar(usuario);
+            usuario.setNombre(dto.getNombre());
+            usuario.setDocumento(dto.getDocumento());
+            usuario.setTelefono(dto.getTelefono());
+            usuario.setCorreo(dto.getCorreo());
+            usuario.setContraseña(dto.getContraseña());
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(nuevo);
+            MUsuario nuevo = usuarioService.guardar(usuario);
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(nuevo);
+
+        } catch (Exception e) {
+
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(e.getMessage());
+        }
     }
 
     // ACTUALIZAR (DTO)
     @PutMapping("/{id}")
-    public ResponseEntity<MUsuario> actualizar(
+    public ResponseEntity<?> actualizar(
             @PathVariable Long id,
-            @RequestBody UsuarioDto dto) throws Exception {
+            @RequestBody UsuarioDto dto) {
 
-        MUsuario usuario = usuarioService.buscarPorId(id)
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        try {
 
-        usuario.setNombre(dto.getNombre());
-        usuario.setDocumento(dto.getDocumento());
-        usuario.setTelefono(dto.getTelefono());
-        usuario.setCorreo(dto.getCorreo());
-        usuario.setContraseña(dto.getContraseña());
+            MUsuario usuario = usuarioService.buscarPorId(id)
+                    .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
-        MUsuario actualizado = usuarioService.guardar(usuario);
+            usuario.setNombre(dto.getNombre());
+            usuario.setDocumento(dto.getDocumento());
+            usuario.setTelefono(dto.getTelefono());
+            usuario.setCorreo(dto.getCorreo());
+            usuario.setContraseña(dto.getContraseña());
 
-        return ResponseEntity.ok(actualizado);
+            MUsuario actualizado = usuarioService.guardar(usuario);
+
+            return ResponseEntity.ok(actualizado);
+
+        } catch (Exception e) {
+
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(e.getMessage());
+        }
     }
 
     // ELIMINAR
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> eliminar(@PathVariable Long id) throws Exception {
+    public ResponseEntity<?> eliminar(@PathVariable Long id) {
 
-        usuarioService.eliminar(id);
+        try {
 
-        return ResponseEntity.ok("Usuario eliminado correctamente");
+            usuarioService.eliminar(id);
+
+            return ResponseEntity.ok(
+                    "Usuario eliminado correctamente"
+            );
+
+        } catch (Exception e) {
+
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(e.getMessage());
+        }
     }
 }

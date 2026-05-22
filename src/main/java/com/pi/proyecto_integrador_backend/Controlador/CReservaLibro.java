@@ -20,74 +20,122 @@ public class CReservaLibro {
 
     // LISTAR
     @GetMapping
-    public ResponseEntity<List<MReservaLibro>> listar()
-            throws Exception {
+    public ResponseEntity<?> listar() {
 
-        return ResponseEntity.ok(
-                reservaLibroService.listar()
-        );
+        try {
+
+            return ResponseEntity.ok(
+                    reservaLibroService.listar()
+            );
+
+        } catch (Exception e) {
+
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(e.getMessage());
+        }
     }
 
     // BUSCAR POR ID
     @GetMapping("/{id}")
-    public ResponseEntity<MReservaLibro> buscarPorId(
-            @PathVariable Long id)
-            throws Exception {
+    public ResponseEntity<?> buscarPorId(
+            @PathVariable Long id) {
 
-        return reservaLibroService.buscarPorId(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        try {
+
+            return reservaLibroService.buscarPorId(id)
+                    .map(ResponseEntity::ok)
+                    .orElse(ResponseEntity.notFound().build());
+
+        } catch (Exception e) {
+
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(e.getMessage());
+        }
     }
 
     // AGREGAR
     @PostMapping
-    public ResponseEntity<MReservaLibro> guardar(
-            @RequestBody MReservaLibro reservaLibro)
-            throws Exception {
+    public ResponseEntity<?> guardar(
+            @RequestBody MReservaLibro reservaLibro) {
 
-        MReservaLibro nuevo =
-                reservaLibroService.guardar(reservaLibro);
+        try {
 
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(nuevo);
+            MReservaLibro nuevo =
+                    reservaLibroService.guardar(reservaLibro);
+
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(nuevo);
+
+        } catch (Exception e) {
+
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(e.getMessage());
+        }
     }
 
     // MODIFICAR
     @PutMapping("/{id}")
-    public ResponseEntity<MReservaLibro> actualizar(
+    public ResponseEntity<?> actualizar(
             @PathVariable Long id,
-            @RequestBody MReservaLibro reservaLibro)
-            throws Exception {
+            @RequestBody MReservaLibro reservaLibro) {
 
-        reservaLibro.setId(id);
+        try {
 
-        MReservaLibro actualizado =
-                reservaLibroService.guardar(reservaLibro);
+            reservaLibro.setId(id);
 
-        return ResponseEntity.ok(actualizado);
+            MReservaLibro actualizado =
+                    reservaLibroService.guardar(reservaLibro);
+
+            return ResponseEntity.ok(actualizado);
+
+        } catch (Exception e) {
+
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(e.getMessage());
+        }
     }
 
     // ELIMINAR
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> eliminar(
-            @PathVariable Long id)
-            throws Exception {
+    public ResponseEntity<?> eliminar(
+            @PathVariable Long id) {
 
-        reservaLibroService.eliminar(id);
+        try {
 
-        return ResponseEntity.ok(
-                "Registro eliminado correctamente"
-        );
+            reservaLibroService.eliminar(id);
+
+            return ResponseEntity.ok(
+                    "Registro eliminado correctamente"
+            );
+
+        } catch (Exception e) {
+
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(e.getMessage());
+        }
     }
 
     // BUSCAR POR RESERVA
     @PostMapping("/por-reserva")
-    public ResponseEntity<List<MReservaLibro>> buscarPorReserva(
-            @RequestBody MReserva reserva)
-            throws Exception {
+    public ResponseEntity<?> buscarPorReserva(
+            @RequestBody MReserva reserva) {
 
-        return ResponseEntity.ok(
-                reservaLibroService.buscarPorReserva(reserva)
-        );
+        try {
+
+            return ResponseEntity.ok(
+                    reservaLibroService.buscarPorReserva(reserva)
+            );
+
+        } catch (Exception e) {
+
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(e.getMessage());
+        }
     }
 }

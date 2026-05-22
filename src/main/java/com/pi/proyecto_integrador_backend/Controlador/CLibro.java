@@ -19,64 +19,118 @@ public class CLibro {
 
     // LISTAR
     @GetMapping
-    public ResponseEntity<List<MLibro>> listarLibros() throws Exception {
+    public ResponseEntity<?> listarLibros() {
 
-        return ResponseEntity.ok(
-                sLibro.listarLibros()
-        );
+        try {
+
+            return ResponseEntity.ok(
+                    sLibro.listarLibros()
+            );
+
+        } catch (Exception e) {
+
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(e.getMessage());
+        }
     }
 
     // BUSCAR POR ID
     @GetMapping("/{id}")
-    public ResponseEntity<MLibro> consultarPorId(
-            @PathVariable Long id) throws Exception {
+    public ResponseEntity<?> consultarPorId(
+            @PathVariable Long id) {
 
-        MLibro libro = sLibro.consultarPorId(id);
+        try {
 
-        return ResponseEntity.ok(libro);
+            MLibro libro = sLibro.consultarPorId(id);
+
+            return ResponseEntity.ok(libro);
+
+        } catch (Exception e) {
+
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(e.getMessage());
+        }
     }
 
     // BUSCAR POR NOMBRE
     @GetMapping("/buscar")
-    public ResponseEntity<List<MLibro>> consultarPorNombre(
-            @RequestParam String nombre) throws Exception {
+    public ResponseEntity<?> consultarPorNombre(
+            @RequestParam String nombre) {
 
-        return ResponseEntity.ok(
-                sLibro.consultarPorNombre(nombre)
-        );
+        try {
+
+            return ResponseEntity.ok(
+                    sLibro.consultarPorNombre(nombre)
+            );
+
+        } catch (Exception e) {
+
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(e.getMessage());
+        }
     }
 
     // AGREGAR
     @PostMapping
-    public ResponseEntity<MLibro> agregarLibro(
-            @RequestBody MLibro libro) throws Exception {
+    public ResponseEntity<?> agregarLibro(
+            @RequestBody MLibro libro) {
 
-        MLibro nuevo = sLibro.agregarLibro(libro);
+        try {
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(nuevo);
+            MLibro nuevo = sLibro.agregarLibro(libro);
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(nuevo);
+
+        } catch (Exception e) {
+
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(e.getMessage());
+        }
     }
 
     // MODIFICAR
     @PutMapping("/{id}")
-    public ResponseEntity<MLibro> modificarLibro(
+    public ResponseEntity<?> modificarLibro(
             @PathVariable Long id,
-            @RequestBody MLibro libro) throws Exception {
+            @RequestBody MLibro libro) {
 
-        MLibro actualizado =
-                sLibro.modificarLibro(id, libro);
+        try {
 
-        return ResponseEntity.ok(actualizado);
+            MLibro actualizado =
+                    sLibro.modificarLibro(id, libro);
+
+            return ResponseEntity.ok(actualizado);
+
+        } catch (Exception e) {
+
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(e.getMessage());
+        }
     }
 
     // ELIMINAR
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> eliminarLibro(
-            @PathVariable Long id) throws Exception {
+    public ResponseEntity<?> eliminarLibro(
+            @PathVariable Long id) {
 
-        sLibro.eliminarLibro(id);
+        try {
 
-        return ResponseEntity.ok(
-                "Libro eliminado correctamente"
-        );
+            sLibro.eliminarLibro(id);
+
+            return ResponseEntity.ok(
+                    "Libro eliminado correctamente"
+            );
+
+        } catch (Exception e) {
+
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(e.getMessage());
+        }
     }
 }

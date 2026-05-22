@@ -20,44 +20,79 @@ public class CRenovacion {
 
     // LISTAR
     @GetMapping
-    public ResponseEntity<List<MRenovacion>> listarRenovaciones()
-            throws Exception {
+    public ResponseEntity<?> listarRenovaciones() {
 
-        return ResponseEntity.ok(
-                sRenovacion.listarRenovaciones()
-        );
+        try {
+
+            return ResponseEntity.ok(
+                    sRenovacion.listarRenovaciones()
+            );
+
+        } catch (Exception e) {
+
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(e.getMessage());
+        }
     }
 
     // BUSCAR POR FECHA
     @GetMapping("/buscar")
-    public ResponseEntity<List<MRenovacion>> consultarPorFechaRenovacion(
-            @RequestParam LocalDate fechaRenovacion) throws Exception {
+    public ResponseEntity<?> consultarPorFechaRenovacion(
+            @RequestParam LocalDate fechaRenovacion) {
 
-        return ResponseEntity.ok(
-                sRenovacion.consultarPorFechaRenovacion(fechaRenovacion)
-        );
+        try {
+
+            return ResponseEntity.ok(
+                    sRenovacion.consultarPorFechaRenovacion(fechaRenovacion)
+            );
+
+        } catch (Exception e) {
+
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(e.getMessage());
+        }
     }
 
     // AGREGAR
     @PostMapping
-    public ResponseEntity<MRenovacion> guardar(
-            @RequestBody MRenovacion renovacion) throws Exception {
+    public ResponseEntity<?> guardar(
+            @RequestBody MRenovacion renovacion) {
 
-        MRenovacion nueva =
-                sRenovacion.guardar(renovacion);
+        try {
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(nueva);
+            MRenovacion nueva =
+                    sRenovacion.guardar(renovacion);
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(nueva);
+
+        } catch (Exception e) {
+
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(e.getMessage());
+        }
     }
 
     // ELIMINAR
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> eliminar(
-            @PathVariable Long id) throws Exception {
+    public ResponseEntity<?> eliminar(
+            @PathVariable Long id) {
 
-        sRenovacion.eliminar(id);
+        try {
 
-        return ResponseEntity.ok(
-                "Renovación eliminada correctamente"
-        );
+            sRenovacion.eliminar(id);
+
+            return ResponseEntity.ok(
+                    "Renovación eliminada correctamente"
+            );
+
+        } catch (Exception e) {
+
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(e.getMessage());
+        }
     }
 }
